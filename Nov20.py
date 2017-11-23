@@ -4,13 +4,14 @@ from matplotlib import pyplot as plt
 import matplotlib.patches as mpatches
 import os
 import shutil
+import sys, getopt
 
 # paratmeters u need to provide
 home=os.getcwd()+"/"
 ## this determined the mode this model works.
 ### 1 means detected the image provided in $singlepicturetruepaht
 ### 0 means run on all images and output on the folder of $writepicturepath
-ifsinglepicture=0
+ifsinglepicture=1
 singlepictruepath=home+'Test/94.jpg'
 writepicturepath=home+'TestOutputNov22/'
 ## this determined whether you save the intermediate connecting componet
@@ -41,6 +42,12 @@ num = 5+2
 labelCap = labelCap[0:num]
 labelCap2 = labelCap[0:num]
 labelCap3 = labelCap[0:num]
+
+def usage():
+	print "Example: Nov20.py -i 1 -f ~/a.jpg"
+	print "-i 1 refers to singlepicture mode; must provide -f 'filename'"
+	print "-i 0 refers to analyse all images in folder of ./ImageSplit/Test"
+	print "-h for help"
 
 def writeprint(path,strinput=home):
 	print str(strinput)
@@ -253,6 +260,15 @@ def main2():
 		main(imgToDetected,True,newpath)
 		print "the No. "+str(i)+" fininshed"
 
+opts, args = getopt.getopt(sys.argv[1:], "hi:o:")
+for op, value in opts:
+	if op == "-i":
+		ifsinglepicture=eval(value)
+	elif op == "-f":
+		singlepictruepath=value
+	elif op == "-h":
+		usage()
+		sys.exit()
 # if __name__=='__main__':
 if ifsinglepicture:
 	img = cv2.imread(singlepictruepath)
